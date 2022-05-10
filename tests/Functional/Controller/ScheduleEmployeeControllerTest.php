@@ -2,22 +2,37 @@
 
 namespace App\Tests\Functional\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Request;
+use App\Tests\AbstractControllerTest;
 
-class ScheduleEmployeeControllerTest extends WebTestCase
+class ScheduleEmployeeControllerTest extends AbstractControllerTest
 {
+    private array $employees = [
+        [
+            "employee" => '1',
+            "startAm" => '10:00',
+            "endAm" => '13:00',
+            "startPm" => '14:00',
+            "endPm" => '19:00',
+        ],
+        [
+            "employee" => '2',
+            "startAm" => '09:00',
+            "endAm" => '12:00',
+            "startPm" => '13:00',
+            "endPm" => '18:00',
+        ]
+
+    ];
+
     public function test_get_employee_schedule(): void
     {
-        $client = static::createClient();
+        $this->client->request('GET', '/employee-schedule?startDate=2022-05-05&endDate=2022-05-06&employeeId=1');
 
-        $client->request('GET', '/employee-schedule?startDate=2022-02-01&endDate=2022-02-10&employeeId=0');
+        $responseContent = $this->client->getResponse()->getContent();
 
         $this->assertResponseIsSuccessful();
 
-        $jsonResult = json_decode($client->getResponse()->getContent(), true);
-
-        $this->assertArrayHasKey('from', $jsonResult);
+        $this->assertJsonStringEqualsJsonFile(__DIR__ . '/responses/getEmployeeSchedule.json', $responseContent);
 
     }
 

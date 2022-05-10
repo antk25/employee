@@ -23,9 +23,12 @@ class Isdayoff
      */
     public function whatIsDay(array $days, bool $type = true): array
     {
+        $daysResult = array();
+
         foreach ($days as $day)
         {
             $response =  $this->httpClient->request('GET', 'https://isdayoff.ru/'. $day)->getContent();
+
 
             switch ($type) {
                 case true;

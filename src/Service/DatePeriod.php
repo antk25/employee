@@ -8,7 +8,7 @@ class DatePeriod
 
     public function getDatePeriod($startDate, $endDate, $format = 'Y-m-d'): array
     {
-        $startDate = strtotime($startDate);
+        $startDate = strtotime($startDate) - self::DAY;
         $endDate = strtotime($endDate);
         $numDays = round(($endDate - $startDate) / self::DAY) + 1;
 
